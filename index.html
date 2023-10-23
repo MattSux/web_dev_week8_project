@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Dice Roller</title>
+        <!--Import Google Icon Font-->
+        <link rel="stylesheet" href="/css/materialize.min.css">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link rel="stylesheet" href="/css/app.css">
+        <script src="/js/materialize.min.js"></script>
+        <link rel="manifest" href="/manifest.json">
+    </head>
+
+<body class="grey lighten-4">
+    <nav class="z-depth-0">
+        <div class="nav-wrapper container">
+            <a href="/index.html"><b>Dice Roller</b></a>
+            <span class="right grey-text text-darken-1">
+                <i class="material-icons sidenav-trigger" data-target="side-menu">menu</i>
+            </span>
+        </div>
+    </nav>
+
+    <ul id="side-menu" class="sidenav side-menu">
+        <li><a class="subheader">Dice Roller</a></li>
+        <li><a href="/index.html" class="waves-effect">D6</a></li>
+        <li><a href="/pages/dice_four.html" class="waves-effect">D4</a></li>
+        <li><a href="/pages/dice_eight.html" class="waves-effect">D8</a></li>
+        <li><a href="/pages/dice_ten.html" class="waves-effect">D10</a></li>
+        <li><a href="/pages/dice_twelve.html" class="waves-effect">D12</a></li>
+        <li><a href="/pages/dice_twenty.html" class="waves-effect">D20</a></li>
+        <li>
+            <div class="divider"></div>
+        </li>
+        <li>
+            <a href="/pages/contact.html" class="waves-effect">
+            <i class="material-icons">mail_outline</i>Contact
+            </a>
+        </li>
+    </ul>
+
+    <!-- Modal Structure -->
+    <div id="modal1" class="modal">
+        <div class="modal-content">
+        <h4>Running History</h4>
+        <ul id="list"></ul>
+        <h5 id="modal_running_total" style="display: none">Running Total:</h5>
+        </div>
+        <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect waves-red btn-flat">Close</a>
+        </div>
+    </div>
+    <div class="center">
+        <div>
+            <h1>D6</h1>
+        </div>
+        <div>
+            <!-- Modal Trigger -->
+            <button class="btn-floating tooltipped modal-trigger" href="#modal1" data-position="left" data-tooltip="Running Dice Score"  style="margin-bottom: 10%; float:inline-end;" id="dice_score">0</button>
+             
+        </div>
+
+        <div class="face" id="dice">
+            <div id="d_top-left" class="dot d_top d_left"></div>
+            <div id="d_top-center" class="dot d_top d_center"></div>
+            <div id="d_top-right" class="dot d_top d_right"></div>
+            
+            <div id="d_middle-left" class="dot d_middle d_left"></div>
+            <div id="d_middle-center" class="dot d_middle d_center"></div>
+            <div id="d_middle-right" class="dot d_middle d_right"></div>
+            
+            <div id="d_bottom-left" class="dot d_bottom d_left"></div>
+            <div id="d_bottom-center" class="dot d_bottom d_middle"></div>
+            <div id="d_bottom-right" class="dot d_bottom d_right"></div>
+        </div>
+
+        <div>
+            <button class="btn" style="margin-top: 10%;" onclick="diceRoll()">Roll!</button>
+        </div>
+
+        <div>
+            <button class="btn" style="margin-top: 10%;" onclick="resetDice()">Reset</button>
+        </div>
+        
+    </div>
+
+    <script src="/js/ui.js"></script>
+    <script src="/js/app.js"></script>
+</body>
+</html>
+
+<script>
+
+const pop = document.querySelector(".tooltipped");
+M.Tooltip.init(pop,{});
+
+const pop2 = document.querySelector(".modal");
+M.Modal.init(pop2,{});
+
+
+var running_score = 0;
+var running_array = [];
+var number_rolls = 0;
+
+console.log("RUNNING SCORE " + running_score);
+
+    function resetDice()
+    {
+        running_score = 0;
+        running_array = [];
+        number_rolls = 0;
+        hideDots("d_top-left");
+        hideDots("d_top-center");
+        hideDots("d_top-right");
+        hideDots("d_middle-left");
+        hideDots("d_middle-center");
+        hideDots("d_middle-right");
+        hideDots("d_bottom-left");
+        hideDots("d_bottom-center");
+        hideDots("d_bottom-right");
+        document.getElementById("dice_score").innerHTML=(running_score);
+        document.getElementById("modal_running_total").style.display=("none");
+        list.innerHTML = "";
+    }
+
+    function diceRoll(){
+        document.getElementById("dice").classList.add("shake");
+        setTimeout(function(){
+            document.getElementById("dice").classList.remove("shake");
+            document.getElementById("modal_running_total").style.display=("block");
+            let dice_return = Math.floor(Math.random() * 6) + 1;
+            running_score = running_score + dice_return;
+            console.log("RUNNING SCORE " + running_score);
+            document.getElementById("dice_score").innerHTML=(running_score);
+            number_rolls += 1;
+            running_array.push("Roll " + number_rolls + ":");
+            running_array.push(dice_return);
+            list.innerHTML = running_array.map(i => `<li>${i}</li>`).join('');
+            document.getElementById("modal_running_total").innerHTML=("Running Total: " + running_score);
+            switch (dice_return) {
+                case 1:
+                    hideDots("d_top-left");
+                    hideDots("d_top-center");
+                    hideDots("d_top-right");
+                    hideDots("d_middle-left");
+                    showDots("d_middle-center");
+                    hideDots("d_middle-right");
+                    hideDots("d_bottom-left");
+                    hideDots("d_bottom-center");
+                    hideDots("d_bottom-right");
+                    break;
+                case 2:
+                    hideDots("d_top-left");
+                    hideDots("d_top-center");
+                    showDots("d_top-right");
+                    hideDots("d_middle-left");
+                    hideDots("d_middle-center");
+                    hideDots("d_middle-right");
+                    showDots("d_bottom-left");
+                    hideDots("d_bottom-center");
+                    hideDots("d_bottom-right");
+                    break;
+                case 3:
+                    hideDots("d_top-left");
+                    hideDots("d_top-center");
+                    showDots("d_top-right");
+                    hideDots("d_middle-left");
+                    showDots("d_middle-center");
+                    hideDots("d_middle-right");
+                    showDots("d_bottom-left");
+                    hideDots("d_bottom-center");
+                    hideDots("d_bottom-right");
+                    break;
+                case 4:
+                    showDots("d_top-left");
+                    hideDots("d_top-center");
+                    showDots("d_top-right");
+                    hideDots("d_middle-left");
+                    hideDots("d_middle-center");
+                    hideDots("d_middle-right");
+                    showDots("d_bottom-left");
+                    hideDots("d_bottom-center");
+                    showDots("d_bottom-right");
+                    break;
+                case 5:
+                    showDots("d_top-left");
+                    hideDots("d_top-center");
+                    showDots("d_top-right");
+                    hideDots("d_middle-left");
+                    showDots("d_middle-center");
+                    hideDots("d_middle-right");
+                    showDots("d_bottom-left");
+                    hideDots("d_bottom-center");
+                    showDots("d_bottom-right");
+                    break;
+                case 6:
+                    showDots("d_top-left");
+                    hideDots("d_top-center");
+                    showDots("d_top-right");
+                    showDots("d_middle-left");
+                    hideDots("d_middle-center");
+                    showDots("d_middle-right");
+                    showDots("d_bottom-left");
+                    hideDots("d_bottom-center");
+                    showDots("d_bottom-right");
+                }
+        }, 1000);
+    }
+
+    function showDots(id) {
+        var x = document.getElementById(id);
+        x.classList.add("d_show");
+    }
+
+    function hideDots(id) {
+        var x = document.getElementById(id);
+        x.classList.remove("d_show");
+    }
+
+    function sleep(ms) {
+        console.log("SLEEP START");
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+</script>

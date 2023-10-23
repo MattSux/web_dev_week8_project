@@ -1,0 +1,198 @@
+/* colours */
+:root {
+    --primary: #baeff8;
+    --secondary: #4eddf6;
+    --title: #328b9b;
+  }
+  
+  /* layout styles */
+  nav {
+    background: var(--primary);
+    border-bottom: 10px solid var(--secondary);
+  }
+  nav a {
+    text-transform: uppercase;
+    color: var(--title);
+  }
+  nav a span {
+    font-weight: bold;
+  }
+  nav .sidenav-trigger {
+    margin: 0;
+  }
+  
+  /* task styles */
+  .tasks {
+    margin-top: 20px;
+  }
+  .card-panel.task {
+    border-radius: 8px;
+    padding: 10px;
+    box-shadow: 0px 1px 3px rgba(90, 90, 90, 0.1);
+    display: grid;
+    grid-template-columns: 2fr 6fr 1fr;
+    grid-template-areas: "image details delete";
+    position: relative;
+  }
+  .task img {
+    grid-area: image;
+    max-width: 60px;
+  }
+  .task-details {
+    grid-area: details;
+    margin-top: 6px;
+  }
+  .task-delete {
+    grid-area: delete;
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+  }
+  .task-delete i {
+    font-size: 18px;
+  }
+  .task-title {
+    font-weight: bold;
+  }
+  .task-ingredients {
+    font-size: 0.8em;
+  }
+  
+  /* form-styles */
+  .add-btn {
+    background: var(--title) !important;
+  }
+  input {
+    box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+  }
+  .side-form button {
+    background: var(--title);
+    box-shadow: 1px 1px 3px rgba(90, 90, 90, 0.2);
+  }
+  form .input-field {
+    margin-top: 30px;
+  }
+
+  .face {
+    width: 256px;
+    height: 256px;
+    background:rgb(131, 214, 247);
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    border-radius: 12px;
+  }
+
+  .dot {
+    background:rgb(255, 255, 255);
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    place-self: center;
+    display: none;
+  }
+
+  .d_top {
+    grid-row-start: 1;
+  }
+  .d_middle {
+    grid-row-start: 2;
+  }
+  .d_bottom {
+    grid-row-start: 3;
+  }
+  .d_left {
+    grid-column-start: 1;
+  }
+  .d_center {
+    grid-column-start: 2;
+  }
+  .d_right {
+    grid-column-start: 3;
+  }
+
+  .d_show {
+    display: block;
+  }
+
+  .center {
+    background-color: transparent;
+    /* Center vertically and horizontally */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .four-side {
+    font-size: 0;
+    background-color: rgb(131, 214, 247);
+    width: 256px;
+    margin: 0px;
+    height: 256px;
+    display: inline-block;
+    font-size: initial; /* we reset the font-size if we want to add some content */
+    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+  }
+
+  .eight-side {
+    font-size: 0;
+    background-color: rgb(131, 214, 247);
+    width: 256px;
+    margin: 0px;
+    height: 256px;
+    display: inline-block;
+    font-size: initial; /* we reset the font-size if we want to add some content */
+    clip-path: polygon(50% 0, 90% 25%, 95% 70%, 50% 100%, 5% 70%, 10% 25%);
+  }
+
+  .ten-side {
+    font-size: 0;
+    background-color: rgb(131, 214, 247);
+    width: 256px;
+    margin: 0px;
+    height: 256px;
+    display: inline-block;
+    font-size: initial; /* we reset the font-size if we want to add some content */
+    clip-path: polygon(50% 0%, 100% 40%, 100% 60%, 50% 100%, 0 60%, 0 40%);
+  }
+
+  .twelve-side {
+    font-size: 0;
+    background-color: rgb(131, 214, 247);
+    width: 256px;
+    margin: 0px;
+    height: 256px;
+    display: inline-block;
+    font-size: initial; /* we reset the font-size if we want to add some content */
+    clip-path: polygon(50% 0%, 80% 10%, 100% 35%, 100% 70%, 80% 90%, 50% 100%, 20% 90%, 0% 70%, 0% 35%, 20% 10%);
+  }
+
+  .twenty-side {
+    font-size: 0;
+    background-color: rgb(131, 214, 247);
+    width: 256px;
+    margin: 0px;
+    height: 256px;
+    display: inline-block;
+    font-size: initial; /* we reset the font-size if we want to add some content */
+    clip-path: polygon(50% 0%, 100% 30%, 100% 70%, 50% 100%, 0 70%, 0 30%);
+  }
+
+  
+
+  .shake{
+    animation: shake 0.5s infinite;
+  }
+  @keyframes shake{
+    0%{
+      transform: rotate(8deg);
+    }
+    50%{
+      transform: rotate(-8deg);
+    }
+    100%{
+      transform: rotate(8deg);
+    }
+  }
