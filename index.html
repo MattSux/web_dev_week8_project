@@ -31,14 +31,6 @@
         <li><a href="/pages/dice_ten.html" class="waves-effect">D10</a></li>
         <li><a href="/pages/dice_twelve.html" class="waves-effect">D12</a></li>
         <li><a href="/pages/dice_twenty.html" class="waves-effect">D20</a></li>
-        <li>
-            <div class="divider"></div>
-        </li>
-        <li>
-            <a href="/pages/contact.html" class="waves-effect">
-            <i class="material-icons">mail_outline</i>Contact
-            </a>
-        </li>
     </ul>
 
     <!-- Modal Structure -->
@@ -52,6 +44,7 @@
         <a href="#!" class="modal-close waves-effect waves-red btn-flat">Close</a>
         </div>
     </div>
+
     <div class="center">
         <div>
             <h1>D6</h1>
@@ -68,7 +61,7 @@
             <div id="d_top-right" class="dot d_top d_right"></div>
             
             <div id="d_middle-left" class="dot d_middle d_left"></div>
-            <div id="d_middle-center" class="dot d_middle d_center"></div>
+            <div id="d_middle-center" class="dot d_middle d_center d_show"></div>
             <div id="d_middle-right" class="dot d_middle d_right"></div>
             
             <div id="d_bottom-left" class="dot d_bottom d_left"></div>
@@ -100,15 +93,33 @@ const pop2 = document.querySelector(".modal");
 M.Modal.init(pop2,{});
 
 
-var running_score = 0;
 var running_array = [];
-var number_rolls = 0;
-
-console.log("RUNNING SCORE " + running_score);
+if (localStorage.getItem("runningScore") == null)
+{
+    document.getElementById("dice_score").innerHTML=(0);
+}
+else
+{
+    document.getElementById("dice_score").innerHTML=(localStorage.getItem("runningScore"));
+}
+if (running_array.length==0)
+            {
+                storage_array = localStorage.getItem('localRunningArray');
+                storage_array = JSON.parse(storage_array);
+                console.log("running array length is 0, localRunningArray value = " + storage_array);
+                running_array.concat(storage_array);
+                running_array = running_array.concat(storage_array);
+                console.log("Running array concat: " + running_array);
+                running_array = running_array.filter(elements => {
+                return elements !== null;
+                });
+            }
+list.innerHTML = running_array.map(i => `<li>${i}</li>`).join('');
+document.getElementById("modal_running_total").innerHTML=("Running Total: " + localStorage.getItem("runningScore"));
+document.getElementById("modal_running_total").style.display=("block");
 
     function resetDice()
     {
-        running_score = 0;
         running_array = [];
         number_rolls = 0;
         hideDots("d_top-left");
@@ -120,9 +131,10 @@ console.log("RUNNING SCORE " + running_score);
         hideDots("d_bottom-left");
         hideDots("d_bottom-center");
         hideDots("d_bottom-right");
-        document.getElementById("dice_score").innerHTML=(running_score);
+        document.getElementById("dice_score").innerHTML=(0);
         document.getElementById("modal_running_total").style.display=("none");
         list.innerHTML = "";
+        localStorage.clear();
     }
 
     function diceRoll(){
@@ -130,15 +142,8 @@ console.log("RUNNING SCORE " + running_score);
         setTimeout(function(){
             document.getElementById("dice").classList.remove("shake");
             document.getElementById("modal_running_total").style.display=("block");
+            //dice roll value
             let dice_return = Math.floor(Math.random() * 6) + 1;
-            running_score = running_score + dice_return;
-            console.log("RUNNING SCORE " + running_score);
-            document.getElementById("dice_score").innerHTML=(running_score);
-            number_rolls += 1;
-            running_array.push("Roll " + number_rolls + ":");
-            running_array.push(dice_return);
-            list.innerHTML = running_array.map(i => `<li>${i}</li>`).join('');
-            document.getElementById("modal_running_total").innerHTML=("Running Total: " + running_score);
             switch (dice_return) {
                 case 1:
                     hideDots("d_top-left");
@@ -206,6 +211,54 @@ console.log("RUNNING SCORE " + running_score);
                     hideDots("d_bottom-center");
                     showDots("d_bottom-right");
                 }
+            
+            //set the running score
+            if (localStorage.getItem("runningScore") == null)
+            {
+                localStorage.setItem("runningScore",dice_return);
+                console.log("First dice roll= " + localStorage.getItem("runningScore"));
+            }
+            else
+            {
+                console.log("Number Running Score: " + Number(localStorage.getItem("runningScore")));
+                console.log("Number Dice Return: " + Number(dice_return));
+                let x = Number(localStorage.getItem("runningScore")) + Number(dice_return);
+                localStorage.setItem("runningScore",x);
+            }
+            //running_score = running_score + dice_return;
+            console.log("RUNNING SCORE " + localStorage.getItem("runningScore"));
+            document.getElementById("dice_score").innerHTML=(localStorage.getItem("runningScore"));
+            
+            //code for info displayed in modal
+            if (localStorage.getItem("numberRolls") == null)
+            {
+                localStorage.setItem("numberRolls",1);
+            }
+            else
+            {
+                let y = Number(localStorage.getItem("numberRolls"))+1;
+                localStorage.setItem("numberRolls",y);
+            }
+            
+            
+            ///code from here
+
+            running_array.push("Roll " + localStorage.getItem("numberRolls") + " (d6):");
+            running_array.push(dice_return);
+            
+            if (localStorage.getItem("localRunningArray") == null)
+            {
+                localStorage.setItem("localRunningArray",JSON.stringify(running_array));
+            }
+            else
+            {
+                localStorage.setItem("localRunningArray",JSON.stringify(running_array));
+            }
+            
+
+            list.innerHTML = running_array.map(i => `<li>${i}</li>`).join('');
+            document.getElementById("modal_running_total").innerHTML=("Running Total: " + localStorage.getItem("runningScore"));
+            
         }, 1000);
     }
 
